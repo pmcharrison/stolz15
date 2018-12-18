@@ -2,8 +2,9 @@
 #'
 #' This function computes a chord's smoothed logarithmic periodicity,
 #' after \insertCite{Stolzenburg2015;textual}{stolz15}.
-#' @param chord (numeric vector):
-#' The chord's constituent notes, expressed on a MIDI scale.
+#' @param x Sonority to analyse.
+#' This will be coerced to an object of class \code{\link[hrep]{pi_chord}}.
+#' Numeric inputs will be interpreted as MIDI note numbers.
 #' @param d (numeric scalar):
 #' Maximal allowed error in the algorithm's
 #' interval approximation step, expressed as
@@ -15,13 +16,26 @@
 #' and lower consonance.
 #' @references
 #'   \insertAllCited{}
+#' @rdname smooth_log_periodicity
 #' @export
-smooth_log_periodicity <- function(chord, d = 0.011) {
-  checkmate::qassert(chord, "N+")
+smooth_log_periodicity <- function(x, d = 0.011) {
+  UseMethod("smooth_log_periodicity")
+}
+
+#' @rdname smooth_log_periodicity
+#' @export
+smooth_log_periodicity.default <- function(x, d = 0.011) {
+  x <- hrep::pi_chord(x)
+  do.call(smooth_log_periodicity, as.list(environment()))
+}
+
+#' @rdname smooth_log_periodicity
+#' @export
+smooth_log_periodicity.pi_chord <- function(x, d = 0.011) {
   checkmate::qassert(d, "N1(0,)")
-  chord <- sort(unique(chord))
-  mean(vapply(seq_along(chord), function(i) {
-    tmp_chord <- chord - chord[i]
+  chord <- as.numeric(x)
+  mean(vapply(seq_along(x), function(i) {
+    tmp_chord <- x - x[i]
     log2(relative_periodicity(rationalise_chord(tmp_chord, d = d)))
   }, numeric(1)))
 }
