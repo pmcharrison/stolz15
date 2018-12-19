@@ -2,13 +2,20 @@
 % Please edit documentation in R/main.R
 \name{smooth_log_periodicity}
 \alias{smooth_log_periodicity}
+\alias{smooth_log_periodicity.default}
+\alias{smooth_log_periodicity.pi_chord}
 \title{Smoothed log periodicity}
 \usage{
-smooth_log_periodicity(chord, d = 0.011)
+smooth_log_periodicity(x, d = 0.011)
+
+\method{smooth_log_periodicity}{default}(x, d = 0.011)
+
+\method{smooth_log_periodicity}{pi_chord}(x, d = 0.011)
 }
 \arguments{
-\item{chord}{(numeric vector):
-The chord's constituent notes, expressed on a MIDI scale.}
+\item{x}{Sonority to analyse.
+This will be coerced to an object of class \code{\link[hrep]{pi_chord}}.
+Numeric inputs will be interpreted as MIDI note numbers.}
 
 \item{d}{(numeric scalar):
 Maximal allowed error in the algorithm's
