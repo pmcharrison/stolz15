@@ -10,6 +10,7 @@ status](https://travis-ci.org/pmcharrison/stolz15.svg?branch=master)](https://tr
 status](https://ci.appveyor.com/api/projects/status/github/pmcharrison/stolz15?branch=master&svg=true)](https://ci.appveyor.com/project/pmcharrison/stolz15)
 [![Coverage
 status](https://coveralls.io/repos/github/pmcharrison/stolz15/badge.svg)](https://coveralls.io/r/pmcharrison/stolz15?branch=master)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.2545762.svg)](https://doi.org/10.5281/zenodo.2545762)
 
 Periodicity, also known as harmonicity, is an important predictor of a
 chord’s consonance. This package implements Stolzenburg’s (2015)
