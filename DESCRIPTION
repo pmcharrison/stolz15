@@ -1,6 +1,6 @@
 Package: stolz15
 Title: Implementation of Stolzenburg's (2015) Periodicity Algorithm
-Version: 0.0.0.9000
+Version: 0.1.0
 Authors@R: person("Peter", "Harrison", email = "pmc.harrison@gmail.com", role = c("aut", "cre"))
 Description: Implements Stolzenburg's (2015) periodicity detection algorithm, which can be used to estimate the consonance of musical chords.
 Depends: R (>= 3.5.0)
