@@ -13,8 +13,9 @@ Imports:
     Rdpack (>= 0.9.0),
     hrep
 Suggests: 
-    testthat (>= 2.0.0)
+    testthat (>= 2.0.0),
+    covr
 RdMacros: Rdpack
-RoxygenNote: 6.1.0
+RoxygenNote: 6.1.1
 Remotes:
     pmcharrison/hrep

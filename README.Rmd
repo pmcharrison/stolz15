@@ -15,7 +15,10 @@ knitr::opts_chunk$set(
 
 # stolz15 - Implementation of Stolzenburg's (2015) Periodicity Algorithm
 
-[![lifecycle](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://www.tidyverse.org/lifecycle/#experimental)
+[![lifecycle](https://img.shields.io/badge/lifecycle-maturing-blue.svg)](https://www.tidyverse.org/lifecycle/#maturing)
+[![Travis build status](https://travis-ci.org/pmcharrison/stolz15.svg?branch=master)](https://travis-ci.org/pmcharrison/stolz15)
+[![AppVeyor build status](https://ci.appveyor.com/api/projects/status/github/pmcharrison/stolz15?branch=master&svg=true)](https://ci.appveyor.com/project/pmcharrison/stolz15)
+[![Coverage status](https://coveralls.io/repos/github/pmcharrison/stolz15/badge.svg)](https://coveralls.io/r/pmcharrison/stolz15?branch=master)
 
 Periodicity, also known as harmonicity, 
 is an important predictor of a chord's consonance.
