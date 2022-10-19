@@ -1,3 +1,46 @@
+stolzenburg_dyad <- function(x) {
+  orig = x-x[1]
+  orig_matrix = rationalise_chord(orig)
+  inversion = x-x[2]
+  inversion_matrix = rationalise_chord(inversion)
+  tibble::tibble_row(
+    orig_chord = toString(orig),
+    orig_ratio_1 = toString(orig_matrix[,1]),
+    orig_ratio_2 = toString(orig_matrix[,2]),
+    orig_relative_periodicity = log2(relative_periodicity(orig_matrix)),
+    inversion_chord = toString(inversion),
+    inversion_ratio_1 = toString(inversion_matrix[,1]),
+    inversion_ratio_2 = toString(inversion_matrix[,2]),
+    inversion_relative_periodicity = log2(relative_periodicity(inversion_matrix)),
+    smooth_log_periodicity = smooth_log_periodicity(x)
+  )
+}
+stolzenburg_triad <- function(x) {
+  orig = x-x[1]
+  orig_matrix = rationalise_chord(orig)
+  inversion = x-x[2]
+  inversion_matrix = rationalise_chord(inversion)
+  sec_inversion = x-x[3]
+  sec_inversion_matrix = rationalise_chord(sec_inversion)
+  tibble::tibble_row(
+    # root
+    orig_chord = toString(orig),
+    orig_ratio_1 = toString(orig_matrix[,1]),
+    orig_ratio_2 = toString(orig_matrix[,2]),
+    orig_relative_periodicity = log2(relative_periodicity(orig_matrix)),
+    # first inversion
+    inversion_chord = toString(inversion),
+    inversion_ratio_1 = toString(inversion_matrix[,1]),
+    inversion_ratio_2 = toString(inversion_matrix[,2]),
+    inversion_relative_periodicity = log2(relative_periodicity(inversion_matrix)),
+    # second inversion
+    sec_inversion_chord = toString(sec_inversion),
+    sec_inversion_ratio_1 = toString(sec_inversion_matrix[,1]),
+    sec_inversion_ratio_2 = toString(sec_inversion_matrix[,2]),
+    sec_inversion_relative_periodicity = log2(relative_periodicity(sec_inversion_matrix)),
+    smooth_log_periodicity = smooth_log_periodicity(x)
+  )
+}
 #' Smoothed log periodicity
 #'
 #' This function computes a chord's smoothed logarithmic periodicity,
@@ -9,7 +52,7 @@
 #' Maximal allowed error in the algorithm's
 #' interval approximation step, expressed as
 #' a fraction of the original interval.
-#' The default value, 0.011, corresponds to 'Rational Tuning II'
+#' The default value, 0.0102, corresponds to 'Rational Tuning II'
 #' in Stolzenburg's paper.
 #' @return A numeric scalar identifying the chord's periodicity.
 #' High values mean a higher period length, lower periodicity,
@@ -18,13 +61,13 @@
 #'   \insertAllCited{}
 #' @rdname smooth_log_periodicity
 #' @export
-smooth_log_periodicity <- function(x, d = 0.011) {
+smooth_log_periodicity <- function(x, d = 0.0102) {
   UseMethod("smooth_log_periodicity")
 }
 
 #' @rdname smooth_log_periodicity
 #' @export
-smooth_log_periodicity.default <- function(x, d = 0.011) {
+smooth_log_periodicity.default <- function(x, d = 0.0102) {
   x <- hrep::pi_chord(x)
   do.call(smooth_log_periodicity, as.list(environment()))
 }
@@ -36,6 +79,10 @@ smooth_log_periodicity.pi_chord <- function(x, d = 0.011) {
   chord <- as.numeric(x)
   mean(vapply(seq_along(x), function(i) {
     tmp_chord <- x - x[i]
+    print(x)
+    print('tmp_chord')
+    print(tmp_chord)
+    print(log2(relative_periodicity(rationalise_chord(tmp_chord, d = d))))
     log2(relative_periodicity(rationalise_chord(tmp_chord, d = d)))
   }, numeric(1)))
 }
@@ -77,11 +124,11 @@ fraction <- function(x, d, verbose = FALSE) {
 # Uses rational tuning system 2
 # Non-integer inputs permitted
 # @param d = 0.011 corresponds to rational tuning 2
-get_rational_interval <- function(x, d) {
+get_rational_interval <- function(x, d = 0.0102) {
   stopifnot(length(x) == 1L)
   octave <- floor(x / 12)
   pitch_class <- x %% 12
-  res <- fraction(2 ^ (pitch_class / 12), d = 0.011)
+  res <- fraction(2 ^ (pitch_class / 12), d = d)
   while (octave != 0) {
     if (octave < 0) {
       res <- half_fraction(res)
@@ -106,12 +153,13 @@ double_fraction <- function(x) {
   x
 }
 
-rationalise_chord <- function(x, d) {
+rationalise_chord <- function(x, d=0.0102) {
   sapply(x, function(y) get_rational_interval(y, d))
 }
 
 relative_periodicity <- function(x) {
   stopifnot(is.matrix(x), nrow(x) == 2, ncol(x) > 0L)
+  print(x)
   lcm(x[2, ])  * x[1, 1] / x[2, 1]
 }
 
