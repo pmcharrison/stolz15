@@ -23,3 +23,51 @@ test_that('inverting the intervals is symmetrical',{
   # expect symmetry between tonic and octave
   expect_equal(tonic_dissonance,rev(octave_dissonance))
 })
+test_that('direction up +1 (tonic perspective ) and down -1 (octave perspective) ratios make sense',{
+  expect_equal(get_rational_interval(7, d=0.0102,direction=+1),c(3,2))
+  expect_equal(get_rational_interval(7, d=0.0102,direction=-1),c(3,4))
+  expect_equal(get_rational_interval(7, d=0.0102,direction=-1),
+               rev(get_rational_interval(5, d=0.0102,direction=+1)))
+
+  expect_equal(get_rational_interval(0, d=0.0102,direction=+1),c(1,1))
+  expect_equal(get_rational_interval(12, d=0.0102,direction=+1),c(2,1))
+  expect_equal(get_rational_interval(0, d=0.0102,direction=-1),c(1,2))
+  expect_equal(get_rational_interval(12, d=0.0102,direction=-1),c(1,1))
+
+  expect_equal(rationalise_chord(0, d=0.0102, direction=+1),matrix(c(1,1),nrow=2))
+  expect_equal(rationalise_chord(12, d=0.0102, direction=+1),matrix(c(2,1),nrow=2))
+  expect_equal(rationalise_chord(0, d=0.0102, direction=-1),matrix(c(1,2),nrow=2))
+  expect_equal(rationalise_chord(12, d=0.0102, direction=-1),matrix(c(1,1),nrow=2))
+
+  expect_equal(rationalise_chord(69, d=0.0102, direction=+1),matrix(c(160,3),nrow=2))
+
+  expect_equal(rationalise_chord(c(0,4,7), d=0.0102, direction=+1),
+               matrix(c(1,1,5,4,3,2),nrow=2))
+  expect_equal(rationalise_chord(c(0,4,7), d=0.0102, direction=-1),
+               matrix(c(1,2,5,8,3,4),nrow=2))
+})
+
+test_that('pitches work up and down',{
+  expect_equal(smooth_log_periodicity(c(69,69+12), d=0.0102, direction=+1),0)
+  expect_equal(smooth_log_periodicity(c(69,69+12), d=0.0102, direction=-1),0)
+})
+
+test_that('triads land in an interesting way on brightness affinity',{
+  tonic_dissonance = smooth_log_periodicity(69+c(0,4,7), d=0.0102)
+  octave_dissonance = smooth_log_periodicity(69+c(4,7,12), d=0.0102)
+  expect_gt(octave_dissonance,tonic_dissonance)
+
+  tonic_dissonance = smooth_log_periodicity(69+c(0,5,8), d=0.0102)
+  octave_dissonance = smooth_log_periodicity(69+c(5,8,12), d=0.0102)
+  expect_gt(tonic_dissonance,octave_dissonance)
+
+  tonic_dissonance = smooth_log_periodicity(69+c(0,4,7), d=0.0102, direction=+1)
+  octave_dissonance = smooth_log_periodicity(69+c(0,4,7), d=0.0102, direction=-1)
+  # major means octave > tonic
+  expect_gt(octave_dissonance,tonic_dissonance)
+
+  tonic_dissonance = smooth_log_periodicity(69+c(0,3,7), d=0.0102, direction=+1)
+  octave_dissonance = smooth_log_periodicity(69+c(0,3,7), d=0.0102, direction=-1)
+  # minor means tonic > octave
+  expect_gt(tonic_dissonance,octave_dissonance)
+})
