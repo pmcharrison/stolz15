@@ -77,11 +77,11 @@ fraction <- function(x, d, verbose = FALSE) {
 # Uses rational tuning system 2
 # Non-integer inputs permitted
 # @param d = 0.011 corresponds to rational tuning 2
-get_rational_interval <- function(x, d) {
+get_rational_interval <- function(x, d = 0.011) {
   stopifnot(length(x) == 1L)
   octave <- floor(x / 12)
   pitch_class <- x %% 12
-  res <- fraction(2 ^ (pitch_class / 12), d = 0.011)
+  res <- fraction(2 ^ (pitch_class / 12), d = d)
   while (octave != 0) {
     if (octave < 0) {
       res <- half_fraction(res)
@@ -115,8 +115,4 @@ relative_periodicity <- function(x) {
   lcm(x[2, ])  * x[1, 1] / x[2, 1]
 }
 
-lcm <- function(x) {
-  if (length(x) == 1L) x else if (length(x) == 2L) {
-    gmp::lcm.default(x[1], x[2])
-  } else lcm(c(x[1], lcm(x[-1])))
-}
+lcm <- function(x) Reduce(numbers::LCM, x)
