@@ -48,3 +48,18 @@ test_that("smooth_log_periodicity", {
   expect_equal(smooth_log_periodicity(c(0, 3, 7)), log2(10))
   expect_equal(smooth_log_periodicity(c(0:11)) %>% round(digits = 1), 7.4)
 })
+
+test_that('changing deviation works', {
+  default_d = smooth_log_periodicity(c(60, 61.1))
+  custom_d  = smooth_log_periodicity(c(60, 61.1), d=0.05)
+  expect_true(default_d != custom_d)
+})
+
+test_that('results are not NaN for 10 harmonics',{
+  from_timbre_paper = smooth_log_periodicity(
+    c(60, 64.41441, 72.84467, 77.25909, 80.35832, 84.77274, 85.68934, 89.82440,
+      90.10376, 93.20300, 94.23882, 96.05955, 97.61741, 98.53402, 100.47397,
+      100.71665, 102.66908, 102.94843)
+  )
+  expect_false(is.nan(from_timbre_paper))
+})
