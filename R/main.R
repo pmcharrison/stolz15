@@ -117,6 +117,6 @@ relative_periodicity <- function(x) {
 
 lcm <- function(x) {
   if (length(x) == 1L) x else if (length(x) == 2L) {
-    gmp::lcm.default(x[1], x[2])
+    numbers::LCM(x[1], x[2])
   } else lcm(c(x[1], lcm(x[-1])))
 }

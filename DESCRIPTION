@@ -8,7 +8,7 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Imports: 
-    gmp (>= 0.5.13.2),
+    numbers
     checkmate (>= 1.8.5),
     Rdpack (>= 0.9.0),
     hrep
